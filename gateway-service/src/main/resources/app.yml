@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        # Route pour le service User & Auth
+        - id: user-auth-service
+          uri: http://localhost:8083/
+          predicates:
+            - Path=/api/auth/**,/utilisateurs/**,/api/roles/**,/api/notifications/**
+#          filters:
+#            - RewritePath=/(?<segment>.*), /$\{segment}
+
+        # Route pour le service Content
+        - id: content-service
+          uri: http://localhost:8082/
+          predicates:
+            - Path=/api/formations/**,/api/sections/**,/api/contenus/**,/api/progressions/**
+          filters:
+            - RewritePath=/(?<segment>.*), /$\{segment}
+
+server:
+  port: 8888
